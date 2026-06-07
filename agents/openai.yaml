@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deck Builder"
+  short_description: "Turn any content into polished slide decks"
+  default_prompt: "Use $deck-builder to turn this material into a polished presentation with outline, visuals, and a runnable deck."
