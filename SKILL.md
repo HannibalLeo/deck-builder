@@ -1,166 +1,107 @@
 ---
 name: deck-builder
-description: Build polished presentations from arbitrary material by turning notes, URLs, docs, code, product/management/research content, or rough ideas into a slide strategy, production prompt, visual direction, generated/selected images, speaker notes, and a finished deck. Use when the user asks to create, improve, abstract, or generate PPT, PowerPoint, slide decks, web-native presentations, frontend-slides, pitch decks, talk decks, teaching decks, strategy decks, product decks, technical/code walkthrough decks, or a reusable prompt for making presentations.
+description: Use when creating or improving PPT, PowerPoint, slide decks, HTML presentations, or reusable presentation prompts, especially when the user supplies a reference deck or says the slides are too simple, monotonous, or lack logic.
 ---
 
 # Deck Builder
 
-## Overview
+Turn source material into a finished presentation. Build the argument and the visual explanation together; a tidy arrangement of bullets is not enough when the audience needs to understand a mechanism, dependency, or decision.
 
-Turn varied source material into a presentation-ready deck. Preserve the useful structure of high-quality one-off PPT prompts while adapting the narrative, visual system, tools, and output format to the user's actual domain.
+This skill works in Claude Code and Codex. Use the current host's available tools and installed skills. An authorized creation or revision request is enough to begin reversible production; ask only for missing information that would materially change the result.
 
-Do not stop at a generic prompt unless the user explicitly asks for prompt-only output. Build the deck or the closest runnable artifact available in the current environment.
+## 1. Lock the assignment
 
-This skill is an orchestrator. When the real downstream skills below are installed, load and follow their `SKILL.md` files instead of recreating their behavior from memory:
+Identify audience, purpose, output format, page scope, reference materials, and editing needs from the request and files. State consequential assumptions briefly.
 
-- `humanize-ppt`: AST outline director and router for presentation workflows.
-- `guizang-ppt-skill`: single-file horizontal HTML PPT, image assets, covers, Style A editorial magazine and Style B Swiss systems.
-- `humanizer-zh`: Chinese text humanization and AI-writing-pattern cleanup.
-- `frontend-slides`: general self-contained HTML slide production when the route is not covered by `guizang-ppt-skill`.
+- A fixed N-page request means N slides total. Preserve requested page numbering when supplying replacement pages. Distinguish Word physical pages from numbered slide headings in an outline.
+- Deliver PPTX when the user asks for PPT/PowerPoint. Use HTML when requested or when the intended presentation is web-native. Prompt-only requests end with the reusable prompt.
+- Determine whether an existing deck is an **edit target**, an **exact template**, a **style reference**, or a **content/asset source**. These require different degrees of preservation.
+- Keep user sources intact and place outputs in a new task directory. Reuse an existing working brief rather than creating parallel plans.
 
-## Workflow
+## 2. Inspect references visually
 
-### 1. Ingest
+When a reference deck is supplied, or a redesign is requested because the result is simple, monotonous, or illogical, read [reference-driven.md](references/reference-driven.md).
 
-Read the user's source material first. Accept pasted notes, files, folders, URLs, code, transcripts, PDFs, docs, or existing decks.
+Extract text for content discovery, then render the relevant source pages. Inspect a contact sheet for rhythm and individual pages for composition. Record a short visual contract: title treatment, text density, image/diagram proportion, color roles, typography, repeated elements, and how relationships are explained.
 
-If key inputs are missing, ask only for the minimum needed:
+Reference fidelity includes **information structure**, not just palette and fonts. If the reference uses substantive diagrams and explanatory illustrations, plan visuals with comparable explanatory depth. Apply that direction to this task; do not make its colors, illustration style, or panel layout universal defaults.
 
-- audience and purpose
-- target length or presentation time
-- desired output: PPTX, HTML slides, PDF, or prompt-only
-- brand constraints, if any
+For an exact template or edit target, follow the host's presentation skill to preserve masters, layout and existing objects. For inspiration, adapt the visual grammar and rebuild content around the new subject. Preserve original logos only when they belong in the new deliverable.
 
-When the user gives enough context, proceed with reasonable assumptions and state them briefly.
+## 3. Build the argument before the layout
 
-### 2. Route To Real Tools
+Use `humanize-ppt` when installed and useful for turning raw materials into a brief and slide plan. Follow its actual contract. Otherwise create a compact manual brief.
 
-Prefer this routing:
+For each page, identify:
 
-- Use `humanize-ppt` first when raw material needs to become a deck outline, AST, slide plan, speaker intent, router plan, or repeatable presentation workflow.
-- Use `guizang-ppt-skill` for Chinese PPT production when the user wants magazine style, Swiss style, horizontal swipe HTML deck, PPT images, screenshot framing, or social covers.
-- Use `humanizer-zh` only to rewrite Chinese copy, speaker notes, titles, or slide text to remove AI tone and improve human voice. Do not treat it as a slide renderer or outline engine.
-- Use `frontend-slides` for general HTML decks, non-Chinese routes, or custom visual directions outside `guizang-ppt-skill`.
-- Use presentation/PPTX tooling when the user specifically needs editable PowerPoint.
+| Field | Decision it forces |
+| --- | --- |
+| Audience question | What must this page make understandable? |
+| Main point | The claim or subject the page establishes |
+| Inputs / actors | What enters, and who acts? |
+| Mechanism | What transforms, connects, controls, or compares? |
+| Output / use | What becomes possible, and for whom? |
+| Feedback / boundary | What returns for correction; what is only planned? |
+| Visual relation | Sequence, parallel branches, shared foundation, hierarchy, comparison, or loop |
 
-If a named downstream skill is missing, say it is missing and either install it when appropriate or fall back explicitly. Do not pretend the missing skill's behavior is known.
+Use the fields that fit the subject. Do not invent an operational loop for a portrait or a simple factual slide.
 
-### 3. Extract The Deck Thesis
+Map relationships across pages too. Page order does not imply dependency: if a shared database supports both research datasets and clinical access, depict two branches, not a chain that requires research processing before clinical access.
 
-If `humanize-ppt` is available, use it for this step. Otherwise find the core conflict, decision, transformation, or teaching arc. Prefer a sharp spine over a complete summary.
+Review logic in a separate pass before expensive asset generation. Confirm that arrows mean something specific, responsibilities are clear, and the outcome follows from the mechanism. Distinguish facts, proposals, targets, hypotheses and measured results.
 
-Fallback domain arcs:
+## 4. Compose one explanation per page
 
-- Product: user pain -> insight -> solution -> proof -> adoption path
-- Strategy/management: context shift -> operating tension -> choices -> tradeoffs -> next moves
-- Technical/code: problem -> architecture -> critical flows -> implementation details -> risks -> rollout
-- Research/learning: question -> prior model -> evidence -> new model -> implications
-- Sales/pitch: market change -> urgent pain -> differentiated offer -> traction -> ask
-- Personal/story: moment -> conflict -> turning point -> lesson -> audience action
+For a new deck without a controlling template, read [composition-playbook.md](references/composition-playbook.md) to choose a content-led page system. When reference and editability needs conflict, resolve the asset mode with [pptx-production.md](references/pptx-production.md).
 
-### 4. Create A Task-Specific Production Prompt
+Choose the layout from the argument and the reference. Useful options include process diagrams, system maps, annotated screenshots, comparison tables, evidence charts, timelines and editorial photography.
 
-Before building, create a concise task-specific production prompt that names the real route selected above. Show the full prompt when the user asks for a reusable prompt, asks to inspect the prompt, or when approval before production would reduce risk. Otherwise use it as the working brief and summarize the key choices.
+For a construction or solution briefing whose reference uses engineering diagrams, a useful composition is:
 
-```markdown
-# Role
-You are a senior presentation strategist, information architect, visual director, and frontend-slide/PPT production agent.
+1. Subject title and a short sentence stating the mechanism.
+2. A compact explanation of responsibilities, controls or implementation choices.
+3. A dominant diagram showing the actual relationships.
+4. A concrete output or value statement at the bottom.
 
-# Task
-Transform the supplied material into a polished presentation for [audience] to achieve [purpose]. Output [format] with [length/time] constraints.
+This is a mode, not a mandatory slide template. Let the reference and content determine density and proportions. A minimal reference calls for restraint. A visually rich reference calls for substantive visual work, not cosmetic icons added to empty columns.
 
-# Tool Route
-- First use [humanize-ppt / manual AST fallback] to produce the deck AST and slide plan.
-- Then use [guizang-ppt-skill / frontend-slides / PPTX tooling] for rendering.
-- Use [humanizer-zh] only for Chinese copy cleanup where needed.
-- Use image generation or asset search only after slide structure is stable.
+When asked for multiple versions, vary composition, diagram strategy or narrative emphasis while retaining the same factual coverage. Color swaps alone are not meaningful alternatives. Produce the requested complete versions, not only title-slide previews, unless the user asks to select a direction first.
 
-# Workflow
-1. Structural distillation
-   - Identify the central tension, decision, or transformation.
-   - Build a slide spine, not a linear summary.
-   - Limit the deck to the smallest number of slides that can carry the argument.
-   - Assign each slide a clear Slide Type.
+## 5. Produce with available tools
 
-2. Humanized copy
-   - Remove machine-like phrasing, filler, and long abstract sentences.
-   - Use short, spoken, high-signal copy suitable for a live presentation.
-   - Preserve technical precision where needed.
-   - Add speaker notes that sound like an expert, not a report.
+For PPT/PPTX, read [pptx-production.md](references/pptx-production.md). Read [runtime-and-qa.md](references/runtime-and-qa.md) before producing assets or exporting a deck. The read-only `scripts/preflight.py` can inventory local authoring packages and renderers; it never installs them or selects a host policy.
 
-3. Visual direction
-   - Choose a visual system from the material, audience, and domain.
-   - Define palette, typography, layout rhythm, image style, and motion posture.
-   - Avoid generic startup gradients and decorative visuals that do not clarify the idea.
+| Need | Route when available |
+| --- | --- |
+| Argument / AST / page plan | `humanize-ppt` |
+| PowerPoint creation, editing and rendering | Current host's presentation/PPTX skill and its prescribed runtime |
+| Chinese magazine or Swiss HTML presentation | `guizang-ppt-skill` |
+| Other self-contained HTML presentation | `frontend-slides` |
+| Chinese copy refinement | `humanizer-zh`, only for writing |
+| Custom raster illustrations and rich infographics | Current host's image-generation skill/tool |
 
-4. Image and diagram plan
-   - For each slide, specify one visual role: evidence, metaphor, diagram, product state, architecture, data, portrait, or atmosphere.
-   - Generate images when an image tool is available; otherwise write precise generation prompts or use suitable local/search assets.
-   - Use diagrams for systems, flows, org models, timelines, and code architecture.
+Resolve the skill names and tools actually installed. Read their instructions; do not invent APIs or assume another host's tool is callable. If an optional tool is missing, continue with a suitable installed route and disclose material limitations. If a specifically requested essential tool is unavailable, explain the gap.
 
-5. Production
-   - Prefer the available frontend-slides workflow for self-contained HTML decks.
-   - Use presentation/PPTX tooling when the user specifically needs PowerPoint.
-   - Reserve clean DOM nodes and semantic sections for slides that may later be animated in Remotion.
-   - Verify layout, navigation, overflow, assets, and speaker notes before delivery.
+Write a task-specific production brief before authoring: audience, scope, message, reference contract, slide plan, asset roles, renderer, editability and QA. Show the full prompt only when requested; keep routine build artifacts private.
 
-# Output
-- Slide outline with Slide Type, title, short copy, visual plan, and speaker notes.
-- Generated/selected image prompts or assets.
-- Finished deck artifact and verification notes.
-```
+For each generated asset, specify subject, placement, aspect ratio, style reference, exact labels, meaningful connectors and forbidden factual inventions. Use local/official assets for real institutions, products or evidence. A generated illustration is a schematic, not proof of an existing system.
 
-### 5. Build The Slide Outline
+Keep titles, explanations and conclusions native and editable. Required editable charts, tables or diagrams must use the host's supported native route. A mixed deck may use raster infographics when allowed by the request; disclose that boundary rather than calling it fully editable. Do not silently substitute a flat image for a requested editable diagram.
 
-For each slide, include:
+## 6. Verify the actual deliverable
 
-- Slide Type and layout
-- Slide title
-- Short copy: usually 1-5 bullets, or one strong sentence
-- Visual plan: image, diagram, data, code, product screenshot, or typographic treatment
-- Speaker notes: concise spoken script
+Conduct separate content and visual passes, using independent review when useful and authorized.
 
-- Use 5-8 slides for short explainers.
-- Use 8-12 slides for most talks, pitches, and strategy decks.
-- Use 12-20 slides only when the source material is dense or the user requests depth.
-- Split dense code, tables, or architectures across multiple slides instead of shrinking text.
+**Content:** exact page count and scope, source coverage, mechanism and branch correctness, factual status, image-caption match, policy scope, generated labels, invented numbers and unsupported claims. Keep source provenance in the relevant notes or visible citations where necessary.
 
-## Visual Direction
+**Visual:** render every final slide and inspect it individually. Check Chinese glyphs, wrapping, clipping, overlaps, connectors, crops, legibility, contrast and consistency. Use a contact sheet for flow, not as a substitute for page inspection. Compare against the selected reference contract.
 
-Choose visuals from the content rather than forcing a fixed aesthetic.
+**File:** verify package integrity and declared editability using available tools. Inspect reported findings as well as exit codes; a script that prints errors can still exit zero. A successful export or XML parse does not prove rendering or usability. Use fresh filenames/receipts for revisions where the exporter requires them, then keep superseded drafts outside the delivery folder.
 
-Useful patterns:
+Fix material findings and repeat the affected checks. Never claim PowerPoint verification unless inspected there; name the actual renderer when a limitation matters.
 
-- Code/engineering: dark/light editor accents, architecture diagrams, sequence flows, terminal or API states, restrained technical typography.
-- Product: product screenshots, user journeys, problem/solution contrast, launch narrative, clear interface crops.
-- Management/strategy: operating models, decision matrices, market maps, timelines, scorecards, crisp editorial layouts.
-- Research/education: concept maps, evidence ladders, historical contrast, annotated diagrams, data-first slides.
-- Brand/story: photographic direction, material textures, object closeups, narrative pacing, emotional contrast.
+Deliver the finished file and, when comparison would help, a concise preview. Explain the main improvement and any material editability limitation. Do not deliver prompts or instructions in place of the requested presentation.
 
-If image generation is available, generate or request images slide-by-slide only after the outline is stable. Each image prompt must include subject, composition, style, palette, lighting, aspect ratio, and what idea the image clarifies.
+## Research provenance
 
-## Tool Routing
-
-- `humanize-ppt`: run or follow it for AST outline, audience-state-transfer thinking, router plan, slide plan, presenter/export route, and QA workflow.
-- `guizang-ppt-skill`: run or follow it for Chinese magazine/Swiss HTML PPT generation, image prompts, screenshot framing, social covers, built-in templates, and its validation checklist.
-- `humanizer-zh`: run or follow it for Chinese copy cleanup only: remove AI-writing traces, inflated wording, filler, and unnatural rhythm while preserving meaning.
-- `frontend-slides`: invoke it for HTML slide production when it is the selected renderer, and follow its viewport, density, animation, and verification rules.
-- If image generation is available, use it for custom slide images; otherwise provide exact prompts and use local/search assets when allowed.
-- If the user asks for PPTX/PowerPoint, use available presentation tooling or libraries to create a `.pptx`. If only HTML is practical, explain the limitation and provide the HTML plus export path.
-- If Remotion is relevant, create semantic slide DOM, stable class names, and animation-ready structure; do not add Remotion unless the user asks for video/animation production.
-- If source content requires current web facts, browse or otherwise verify from primary/current sources before building the deck.
-
-## Quality Bar
-
-Before delivery:
-
-- Check that every slide advances the thesis.
-- Remove generic AI phrases, padded transitions, and duplicate points.
-- Verify that text fits the intended slide dimensions.
-- Verify image paths/URLs render.
-- Verify navigation and basic responsiveness for HTML decks.
-- Include file paths and a short verification summary in the final response.
-
-## Prompt-Only Mode
-
-When the user asks only for a reusable prompt, output the adapted production prompt and do not build the deck. Still make the prompt domain-agnostic and include tool routing for `frontend-slides`, image generation, PPTX tooling, and optional Remotion.
+See [source-review.md](references/source-review.md) for the inspected upstream skills, their actual output modes, licensing boundaries and the methods selected for this workflow. This is an independently authored integration; upstream code, templates and runtime gates are not installed or vendored by invoking this skill.
