@@ -28,17 +28,47 @@ $deck-builder 重新设计这 4 页 PPT，先分析参考，补强逻辑和机�
 
 也可直接说“用 deck-builder 做 PPT”。风格和范围足够清楚时直接制作；只有关键信息缺失才追问。
 
-## 本机共享入口
+## 安装与共享
 
-当前实体目录为 `~/.codex/skills/deck-builder/`，`~/.claude/skills/deck-builder/` 是指向它的符号链接。两端读取同一份技能，后续只维护实体目录。无需新增全局钩子或重复拷贝。
+仓库地址：[HannibalLeo/deck-builder](https://github.com/HannibalLeo/deck-builder)。
 
-共享的是流程和资料；Claude 与 Codex 使用各自可用的工具。只读环境探测：
+只使用 Claude Code：
+
+```bash
+git clone https://github.com/HannibalLeo/deck-builder.git ~/.claude/skills/deck-builder
+```
+
+只使用 Codex：
+
+```bash
+git clone https://github.com/HannibalLeo/deck-builder.git ~/.codex/skills/deck-builder
+```
+
+macOS / Linux 上同时使用两端，可以将 Codex 目录作为实体目录，再让 Claude 指向它：
+
+```bash
+mkdir -p ~/.codex/skills ~/.claude/skills
+git clone https://github.com/HannibalLeo/deck-builder.git ~/.codex/skills/deck-builder
+ln -s ~/.codex/skills/deck-builder ~/.claude/skills/deck-builder
+```
+
+上面的命令用于目标目录尚不存在的首次安装。已有安装应先检查实际路径与本地修改，不覆盖现有目录。两端读取同一份技能后，只维护实体目录即可。安装后新开会话以刷新技能发现。
+
+更新实体目录前确认工作区没有尚未保存的修改，再运行：
+
+```bash
+git -C ~/.codex/skills/deck-builder pull --ff-only
+```
+
+若仅安装在 Claude 目录，将上面的路径换成 `~/.claude/skills/deck-builder`。
+
+共享的是流程和资料；Claude 与 Codex 使用各自可用的工具。本技能不会自动安装 PowerPoint 库、图像服务或渲染器，也不包含这些上游工具的实现。只读环境探测：
 
 ```bash
 python3 ~/.codex/skills/deck-builder/scripts/preflight.py
 ```
 
-探测只列出本地模块、运行时和渲染器，不安装依赖，也不代表已成功制作 PPT。
+探测只列出本地模块、运行时和渲染器，不安装依赖，也不代表已成功制作 PPT。仅在 Claude 目录安装时，替换为相应脚本路径。
 
 ## 调研与整合
 
