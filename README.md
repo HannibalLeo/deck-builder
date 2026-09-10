@@ -8,7 +8,7 @@
 2. **先把关系讲清楚。** 每页明确问题、参与者、输入、处理、产出和必要的反馈，区分串行流程、并行应用和共享基础。
 3. **按内容选择视觉。** 流程用机制图，证据用真实图表或截图，比较用对照结构。多个版本需要版式或表达策略的区别。
 4. **按用途保留编辑能力。** 支持原生可编辑、可编辑正文搭配高清示意图，以及用户明确接受的图片版。不会把图片版宣称为全可编辑。
-5. **检查真正交付的文件。** 分别验收内容逻辑、逐页渲染和文件结构，修正后重建并复查。
+5. **检查真正交付的文件。** 在制作前记录字号和视觉目标，先检验一张关键页，再逐页复查；用检查脚本识别图片拉伸、过小字号和文字量超限，图文对应和重叠仍由单页视觉检查确认。
 
 一次成功的方案汇报采用了“标题和建设逻辑、紧凑机制说明、主体信息图、底部成果句”的结构。这是参考驱动的一种模式；技能不会把所有主题强制做成蓝白工程图。
 
@@ -70,6 +70,19 @@ python3 ~/.codex/skills/deck-builder/scripts/preflight.py
 
 探测只列出本地模块、运行时和渲染器，不安装依赖，也不代表已成功制作 PPT。仅在 Claude 目录安装时，替换为相应脚本路径。
 
+## 质量检查
+
+按本次任务确定字号和文字量阈值后，可运行：
+
+```bash
+python3 ~/.codex/skills/deck-builder/scripts/audit_pptx.py final.pptx \
+  --min-font-pt 16 --max-slide-chars 350 --report private-audit.json
+```
+
+以上阈值适合本次短汇报示例，不是所有PPT的固定标准。图片比例默认容差3%。报告区分错误与无法解析的对象，退出码分别为1和2；0也只表示已支持的结构检查通过，不替代逐页看图。关键正文不能靠缩字绕过检查；重要图表不能换成一张无法解释业务的通用插画。
+
+回归测试：`python3 scripts/test_audit_pptx.py`。本次修订用真实差稿验证了2倍图片拉伸与小字能够报错，再用完整重制成品验证改进；客户材料保留在私有工作区，不发布到仓库。
+
 ## 调研与整合
 
 已检查 8 组上游方案，覆盖图解型、HTML 型、原生 PPTX 型与工程验收型。保留其有价值的方法，使用原创说明整合，没有整体安装或复制上游实现。具体来源、版本、输出限制与许可证见 [source-review.md](references/source-review.md)。
@@ -82,4 +95,6 @@ python3 ~/.codex/skills/deck-builder/scripts/preflight.py
 - [pptx-production.md](references/pptx-production.md)：PPTX 制作与编辑能力合同
 - [runtime-and-qa.md](references/runtime-and-qa.md)：跨端环境、中文字体、生成素材及验收
 - [source-review.md](references/source-review.md)：上游研究及采用边界
+- [quality-gates.md](references/quality-gates.md)：参考参数、图文对应、关键页和成品回归检查
 - [scripts/preflight.py](scripts/preflight.py)：只读环境探测
+- [scripts/audit_pptx.py](scripts/audit_pptx.py)：图片比例、原生字号与文字量检查

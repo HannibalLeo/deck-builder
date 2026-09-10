@@ -20,6 +20,8 @@ Use targeted image edits for wrong labels or invented figures. Preserve the acce
 
 ## Export checks
 
+Check actual source image dimensions against its placed frame after cropping. Use the host’s documented contain/cover placement; specifying arbitrary width and height is not a contain operation. A requested aspect ratio in an image prompt does not guarantee the returned image has that ratio.
+
 - Use absolute, resolved workspace paths when locating output and parent directories. `Path('.') .parent` is not a reliable way to reach the current directory's parent; resolve the path first.
 - When the installed finalizer uses `RUNTIME_NODE_MODULES`, export that environment value for its child import check as well as for the builder.
 - Where outputs or receipts are exclusive-create, give both the final file and receipt a new revision name. Reusing a receipt can invalidate an otherwise successful revised export.

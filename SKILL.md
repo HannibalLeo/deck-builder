@@ -15,14 +15,14 @@ Identify audience, purpose, output format, page scope, reference materials, and 
 
 - A fixed N-page request means N slides total. Preserve requested page numbering when supplying replacement pages. Distinguish Word physical pages from numbered slide headings in an outline.
 - Deliver PPTX when the user asks for PPT/PowerPoint. Use HTML when requested or when the intended presentation is web-native. Prompt-only requests end with the reusable prompt.
-- Determine whether an existing deck is an **edit target**, an **exact template**, a **style reference**, or a **content/asset source**. These require different degrees of preservation.
+- Determine whether an existing deck is an **edit target**, an **exact template**, a **style reference**, or a **content/asset source**. Record exact filenames and controlling page numbers for each role. User corrections override older source values. “This style” means the reference established in the conversation; do not silently select an older content deck as the style authority.
 - Keep user sources intact and place outputs in a new task directory. Reuse an existing working brief rather than creating parallel plans.
 
 ## 2. Inspect references visually
 
 When a reference deck is supplied, or a redesign is requested because the result is simple, monotonous, or illogical, read [reference-driven.md](references/reference-driven.md).
 
-Extract text for content discovery, then render the relevant source pages. Inspect a contact sheet for rhythm and individual pages for composition. Record a short visual contract: title treatment, text density, image/diagram proportion, color roles, typography, repeated elements, and how relationships are explained.
+Extract text for content discovery, then render the relevant source pages. Inspect a contact sheet for rhythm and individual pages for composition. Record a short visual contract: title treatment, text density, image/diagram proportion, color roles, typography, repeated elements, and how relationships are explained. Include measured slide dimensions, title/body/caption sizes with units, and expected visual frames. Compare proportions on equivalent canvases, not by copying numbers between incompatible APIs.
 
 Reference fidelity includes **information structure**, not just palette and fonts. If the reference uses substantive diagrams and explanatory illustrations, plan visuals with comparable explanatory depth. Apply that direction to this task; do not make its colors, illustration style, or panel layout universal defaults.
 
@@ -48,7 +48,7 @@ Use the fields that fit the subject. Do not invent an operational loop for a por
 
 Map relationships across pages too. Page order does not imply dependency: if a shared database supports both research datasets and clinical access, depict two branches, not a chain that requires research processing before clinical access.
 
-Review logic in a separate pass before expensive asset generation. Confirm that arrows mean something specific, responsibilities are clear, and the outcome follows from the mechanism. Distinguish facts, proposals, targets, hypotheses and measured results.
+For each page, write a `visual_job` and a short `must_show` list alongside the main point. The image prompt and selected/generated asset must carry these same relationships: a revenue page must show allocation or payment, not generic hospital/cloud imagery. Review logic in a separate pass before expensive asset generation. Confirm that arrows mean something specific, responsibilities are clear, and the outcome follows from the mechanism. Distinguish facts, proposals, targets, hypotheses and measured results.
 
 ## 4. Compose one explanation per page
 
@@ -64,6 +64,8 @@ For a construction or solution briefing whose reference uses engineering diagram
 4. A concrete output or value statement at the bottom.
 
 This is a mode, not a mandatory slide template. Let the reference and content determine density and proportions. A minimal reference calls for restraint. A visually rich reference calls for substantive visual work, not cosmetic icons added to empty columns.
+
+When asked to compress a deck, reassign one audience question to each remaining page and move supporting detail to notes. Record what remains visible and what moved. Preserve the agreed reading size; shrinking all text or stacking the old modules is not content compression.
 
 When asked for multiple versions, vary composition, diagram strategy or narrative emphasis while retaining the same factual coverage. Color swaps alone are not meaningful alternatives. Produce the requested complete versions, not only title-slide previews, unless the user asks to select a direction first.
 
@@ -82,6 +84,8 @@ For PPT/PPTX, read [pptx-production.md](references/pptx-production.md). Read [ru
 
 Resolve the skill names and tools actually installed. Read their instructions; do not invent APIs or assume another host's tool is callable. If an optional tool is missing, continue with a suitable installed route and disclose material limitations. If a specifically requested essential tool is unavailable, explain the gap.
 
+Before completing a whole deck, render one representative content-heavy page and compare it with the visual contract. If the user has already selected the direction, perform this check autonomously; it is not another approval gate. Repair density, visual hierarchy or asset mismatch before propagating the layout.
+
 Write a task-specific production brief before authoring: audience, scope, message, reference contract, slide plan, asset roles, renderer, editability and QA. Show the full prompt only when requested; keep routine build artifacts private.
 
 For each generated asset, specify subject, placement, aspect ratio, style reference, exact labels, meaningful connectors and forbidden factual inventions. Use local/official assets for real institutions, products or evidence. A generated illustration is a schematic, not proof of an existing system.
@@ -94,7 +98,7 @@ Conduct separate content and visual passes, using independent review when useful
 
 **Content:** exact page count and scope, source coverage, mechanism and branch correctness, factual status, image-caption match, policy scope, generated labels, invented numbers and unsupported claims. Keep source provenance in the relevant notes or visible citations where necessary.
 
-**Visual:** render every final slide and inspect it individually. Check Chinese glyphs, wrapping, clipping, overlaps, connectors, crops, legibility, contrast and consistency. Use a contact sheet for flow, not as a substitute for page inspection. Compare against the selected reference contract.
+**Visual:** follow [quality-gates.md](references/quality-gates.md). Render every final slide and inspect it individually. Check Chinese glyphs, wrapping, clipping, overlaps, connectors, crops, legibility, contrast and consistency. Use a contact sheet for flow, not as a substitute for page inspection. Compare against the selected reference contract.
 
 **File:** verify package integrity and declared editability using available tools. Inspect reported findings as well as exit codes; a script that prints errors can still exit zero. A successful export or XML parse does not prove rendering or usability. Use fresh filenames/receipts for revisions where the exporter requires them, then keep superseded drafts outside the delivery folder.
 
